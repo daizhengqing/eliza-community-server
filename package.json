@@ -1,0 +1,16 @@
+{
+  "name": "eliza-community-server",
+  "version": "1.0.0",
+  "main": "index.js",
+  "scripts": {
+    "dev": "netlify dev",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "",
+  "license": "ISC",
+  "description": "",
+  "dependencies": {
+    "axios": "^1.7.8",
+    "net": "^1.0.2"
+  }
+}
