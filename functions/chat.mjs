@@ -1,23 +1,29 @@
 import axios from "axios"
 
 export default async (req, context) => {
-  const messages = req?.body?.messages
+  if (req.method === 'OPTIONS') return new Response('ok', { status: 200 })
 
-  if (!messages) return new Response('need messages')
+  const body = await req.json()
+
+  const messages = body.messages
+
+  if (!messages) new Response('messages is required', { status: 405 })
 
   const api_key = Netlify.env.get('API_KEY')
 
-  const res = await axios.post('https://open.bigmodel.cn/api/paas/v4/chat/completions', {
-    model: 'gjm-4-flash',
-    messages
-  }, {
-    headers: {
-      'Authorization': 'Bearer ' + api_key,
-      'Content-Type': 'application/json'
-    }
-  })
+  try {
+    const res = await axios.post('https://open.bigmodel.cn/api/paas/v4/chat/completions', {
+      model: 'glm-4-flash',
+      messages
+    }, {
+      headers: {
+        'Authorization': 'Bearer ' + api_key,
+        'Content-Type': 'application/json'
+      }
+    })
 
-  return new Response(JSON.stringify({
-    res
-  }))
+    return new Response(JSON.stringify(res.data))
+  } catch (err) {
+    return new Response(err?.message || err?.response?.data?.message || 'error', { status: 500 })
+  }
 }
