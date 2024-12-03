@@ -14,7 +14,13 @@ export default async (req, context) => {
   try {
     const res = await axios.post('https://open.bigmodel.cn/api/paas/v4/chat/completions', {
       model: 'glm-4-flash',
-      messages
+      messages,
+      tools: [{
+        'type': 'web_search',
+        'web_search': {
+          enable: true
+        }
+      }]
     }, {
       headers: {
         'Authorization': 'Bearer ' + api_key,
